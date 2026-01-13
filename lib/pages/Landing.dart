@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../auth/Login.dart';
-import 'student/StudentDashboard.dart';
-import 'staff/StaffDashboard.dart';
-import 'admin/AdminDashboard.dart';
+import 'student/BrowseRepository.dart';
 import '../theme/app_colors.dart'; // Add this import
 import '../theme/app_text_styles.dart'; // Add this import
 
@@ -36,11 +34,17 @@ class _LandingState extends State<Landing> {
   void _navigateBasedOnRole(String role) {
     if (!mounted) return;
     if (role == 'student') {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const StudentDashboard()));
-    } else if (role == 'staff') {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const StaffDashboard()));
-    } else if (role == 'admin') {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const AdminDashboard()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const BrowseRepository()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Role "$role" is not supported in this app.'),
+          backgroundColor: AppColors.error,
+        ),
+      );
     }
   }
 
@@ -69,30 +73,43 @@ class _LandingState extends State<Landing> {
                 color: AppColors.primary500.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.school, size: 80, color: AppColors.primary500),
+              child: const Icon(
+                Icons.school,
+                size: 80,
+                color: AppColors.primary500,
+              ),
             ),
             const SizedBox(height: 32),
             Text(
               "ResearchHub",
-              style: AppTextStyles.heading1.copyWith(color: AppColors.primary600),
+              style: AppTextStyles.heading1.copyWith(
+                color: AppColors.primary600,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               "NU Communities",
-              style: AppTextStyles.heading3.copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.heading3.copyWith(
+                color: AppColors.textSecondary,
+              ),
             ),
             const SizedBox(height: 16),
             Text(
               "Access your campus research anytime, anywhere.",
               textAlign: TextAlign.center,
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textLight),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textLight,
+              ),
             ),
             const SizedBox(height: 48),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const Login()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const Login()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 56),
@@ -103,10 +120,7 @@ class _LandingState extends State<Landing> {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: Text(
-                  "Get Started",
-                  style: AppTextStyles.buttonLarge,
-                ),
+                child: Text("Get Started", style: AppTextStyles.buttonLarge),
               ),
             ),
             const SizedBox(height: 16),
@@ -116,7 +130,9 @@ class _LandingState extends State<Landing> {
               },
               child: Text(
                 "Learn More",
-                style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary500),
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.primary500,
+                ),
               ),
             ),
           ],

@@ -4,6 +4,9 @@ import '../../theme/app_text_styles.dart';
 import '../../widgets/quick_action_card.dart';
 import '../../widgets/dashboard_header.dart';
 import '../../widgets/stat_card.dart';
+import 'SubmitResearch.dart';
+import 'MyResearch.dart';
+import 'BrowseRepository.dart';
 
 class StudentDashboard extends StatelessWidget {
   const StudentDashboard({super.key});
@@ -111,7 +114,10 @@ class StudentDashboard extends StatelessWidget {
                   subtitle: 'Upload new academic paper',
                   color: AppColors.primary500,
                   onTap: () {
-                    // Navigate to submit research
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const SubmitResearch()),
+                    );
                   },
                 ),
                 QuickActionCard(
@@ -120,7 +126,10 @@ class StudentDashboard extends StatelessWidget {
                   subtitle: 'View all submissions',
                   color: AppColors.success,
                   onTap: () {
-                    // Navigate to my research
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const MyResearch()),
+                    );
                   },
                 ),
                 QuickActionCard(
@@ -129,7 +138,10 @@ class StudentDashboard extends StatelessWidget {
                   subtitle: 'Explore academic papers',
                   color: AppColors.info,
                   onTap: () {
-                    // Navigate to browse
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const BrowseRepository()),
+                    );
                   },
                 ),
                 QuickActionCard(

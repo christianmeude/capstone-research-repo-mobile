@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../services/api_service.dart';
 import '../pages/student/StudentDashboard.dart';
-import '../pages/staff/StaffDashboard.dart';
-import '../pages/admin/AdminDashboard.dart';
 import '../theme/app_colors.dart'; // Add this import
 import '../theme/app_text_styles.dart'; // Add this import
 
@@ -46,10 +44,13 @@ class _LoginState extends State<Login> {
 
       if (role == 'student') {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const StudentDashboard()));
-      } else if (role == 'staff') {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const StaffDashboard()));
-      } else if (role == 'admin') {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const AdminDashboard()));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Role "$role" is not supported in this app.'),
+            backgroundColor: AppColors.error,
+          ),
+        );
       }
       
     } catch (e) {
