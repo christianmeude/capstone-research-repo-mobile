@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'pages/Landing.dart';
-import 'theme/app_theme.dart';
+// FIX 1: Point to the new location in features/auth
+import 'features/auth/Landing.dart'; 
+// FIX 2: Point to the new location in core/constants
+import 'core/constants/app_theme.dart'; 
 
 void main() {
   runApp(const ResearchHubApp());

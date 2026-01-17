@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import '../services/api_service.dart';
-import '../pages/student/StudentDashboard.dart';
-import '../theme/app_colors.dart'; // Add this import
-import '../theme/app_text_styles.dart'; // Add this import
+import '../../core/services/api_service.dart';
+import '../student/StudentDashboard.dart';
+import '../../core/constants/app_colors.dart'; // Add this import
+import '../../core/constants/app_text_styles.dart'; // Add this import
 
 class Login extends StatefulWidget {
   const Login({super.key});
