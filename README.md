@@ -1,16 +1,50 @@
-# capstone_research_repo_mobile
+# NUcleus Mobile - Research Repository App 📱
 
-A new Flutter project.
+**NUcleus** is the central hub for academic research and collaboration at **National University - Dasmariñas**. This mobile application allows students to browse, submit, and manage their research papers and capstone projects seamlessly from their devices.
 
-## Getting Started
+## 🚀 Key Features
 
-This project is a starting point for a Flutter application.
+* **Student Dashboard:** View research statistics, analytics, and quick actions at a glance.
+* **Browse Repository:** Access published research papers with a tile-based interface.
+* **Research Submission:** Upload research documents directly (PDF support with preview).
+* **Secure Authentication:** Integrated login flow for student access.
+* **Optimized UI/UX:** Features a responsive layout with Bottom Navigation, Floating Action Button (FAB), and custom headers.
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* **Framework:** [Flutter](https://flutter.dev/)
+* **Language:** Dart
+* **Backend:** Supabase (Edge Functions)
+* **Key Packages:**
+    * `jwt_decoder` (Auth management)
+    * `file_picker` (Document uploading)
+    * `open_filex` (Native file preview/opening)
+    * `http` (API integration)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 👥 The Team
+
+This project is a collaborative effort by the IT Capstone team:
+
+| Role | Name | Contribution |
+| :--- | :--- | :--- |
+| **Project Manager & Documentation** | **Jade Francine Bartolazo** | Project planning, requirements gathering, and system documentation. |
+| **Web System Developer** | **Malfoy de Vera** | Development of the web-based admin and staff portal. |
+| **Mobile App Developer** | **Christian Meude** | Architecture and development of the cross-platform mobile application (Flutter). |
+
+## ⚙️ Installation & Setup
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/christianmeude/capstone-research-repo-mobile.git](https://github.com/christianmeude/capstone-research-repo-mobile.git)
+    ```
+2.  **Install dependencies:**
+    ```bash
+    flutter pub get
+    ```
+3.  **Run the app:**
+    ```bash
+    flutter run
+    ```
+
+---
+*Developed for National University - Dasmariñas | BS Information Technology with Specialization in Mobile and Web Applications*

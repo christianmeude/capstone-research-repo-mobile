@@ -3,16 +3,25 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ApiService {
-  // USE 10.0.2.2 for Android Emulator. Use LAN IP (e.g., 192.168.x.x) for physical phone.
-  static const String baseUrl = 'http://localhost:5000/api';
+  // CONFIGURATION:
+  // For Web (Chrome), use 'http://localhost:5000/api'
+  // For Android Emulator, use 'http://10.0.2.2:5000/api'
+  // For Physical Device, use your PC's LAN IP (e.g. 'http://192.168.1.5:5000/api')
+  static String get baseUrl {
+    if (kIsWeb) {
+      return 'http://localhost:5000/api';
+    } else {
+      return 'http://10.0.2.2:5000/api';
+    }
+  }
 
-  // NOTE: If running on Android emulator use 10.0.2.2:5000 instead of localhost.
-  // Update this constant if you run the backend on a different host.
+  // ==========================================
+  // AUTHENTICATION
+  // ==========================================
 
-  // --- AUTHENTICATION ---
-  
   static Future<Map<String, dynamic>> login(String email, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/auth/login'),
@@ -22,7 +31,6 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      // Save token for later
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', data['token']);
       return data;
@@ -31,9 +39,42 @@ class ApiService {
     }
   }
 
-  // --- RESEARCH ---
+  static Future<Map<String, dynamic>> register({
+    required String fullName,
+    required String email,
+    required String password,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/auth/register'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'fullName': fullName,
+        'email': email,
+        'password': password,
+        'role': 'student',
+      }),
+    );
 
-  // Get user's papers (Matches exports.getMyResearch)
+    if (response.statusCode == 201) {
+      final data = jsonDecode(response.body);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', data['token']);
+      return data;
+    } else {
+      throw Exception(jsonDecode(response.body)['error'] ?? 'Registration failed');
+    }
+  }
+
+  static Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+  }
+
+  // ==========================================
+  // RESEARCH
+  // ==========================================
+
+  // Get user's papers
   static Future<List<dynamic>> getMyResearch() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
@@ -53,31 +94,28 @@ class ApiService {
     }
   }
 
-  // Upload Research (Matches exports.submitResearch)
+  // Upload Research (Mobile - File Path)
   static Future<void> submitResearch({
     required String title,
     required String abstract,
-    String? keywords, // Comma separated string (optional)
+    String? keywords,
     required String category,
     String? coAuthors,
-    required String filePath, // Path from file_picker
+    required String filePath,
   }) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     
     var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/research/submit'));
     
-    // Headers
     request.headers['Authorization'] = 'Bearer $token';
 
-    // Text Fields (Matches req.body in controller)
     request.fields['title'] = title;
     request.fields['abstract'] = abstract;
     request.fields['category'] = category;
     if (keywords != null && keywords.isNotEmpty) request.fields['keywords'] = keywords;
     if (coAuthors != null && coAuthors.isNotEmpty) request.fields['coAuthors'] = coAuthors;
 
-    // File (Matches upload.single('file'))
     request.files.add(await http.MultipartFile.fromPath('file', filePath, contentType: MediaType('application', 'pdf')));
 
     var response = await request.send();
@@ -88,7 +126,7 @@ class ApiService {
     }
   }
 
-  // Upload using raw bytes (used on web where file paths are unavailable)
+  // Upload Research (Web - Bytes)
   static Future<void> submitResearchFromBytes({
     required String title,
     required String abstract,
